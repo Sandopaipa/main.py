@@ -117,6 +117,8 @@ for i in range(1, len(table_main)):
         elif j == 17:
             s_cm.append(src[j].text)
 # Формируем строки таблицы и саму таблицу
+# Можно в принципе уже здесь писать в файл, так как тут формируется таблица
+# Это позволит не формировать её, что уменьшит затраты по памяти и времени
 for i in range(len(date)):
     row.append(date[i])
     row.append(time[i])
@@ -140,7 +142,7 @@ for i in range(len(date)):
     row.append(s_cm[i])
     table.append(row)
     row=[]
-
+# Пишем в файл
 with open('48300_dec.csv', 'w', encoding='cp1251', newline="") as f:
     writer = csv.writer(f, delimiter=';')
     writer.writerows(table)
