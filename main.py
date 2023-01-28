@@ -1,3 +1,5 @@
+import csv
+
 from bs4 import BeautifulSoup
 # словарь - как одна строка таблицы
 # для хранения всей таблицы имеет смысл сделать словарь
@@ -6,7 +8,26 @@ from bs4 import BeautifulSoup
     страницу другого "формата" или вида, как будет угодно - нужно будет
     данный код под конкретную страницу изменять'''
 # Шапка таблицы
-header = ['Te (C)', 'Tes (C)', 'Комфортность', 'P (гПа)', 'Po (гПа)', 'Tmin (C)', 'Tmax (C)', 'R (мм)', 'R24 (мм)', 'S (см)']
+header = [
+    'Время (UTC)',
+    'Дата',
+    'Ветер (напр)',
+    'Видим.',
+    'Явления',
+    'Облачность',
+    'T (C)',
+    'Td (C)',
+    'f (%)',
+    'Te (C)',
+    'Tes (C)',
+    'Комфортность',
+    'P (гПа)',
+    'Po (гПа)',
+    'Tmin (C)',
+    'Tmax (C)',
+    'R (мм)',
+    'R24 (мм)',
+    'S (см)']
 table = [header, ]
 row = []
 # Столбцы таблицы
@@ -44,9 +65,9 @@ title = title.contents
 table_datetime = soup.find("div", class_="archive-table-left-column").find_all("td")
 for i in range(1, len(table_datetime)):
     if i % 2 == 1:
-        time.append(table_datetime[i].contents)
+        time.append(table_datetime[i].text)
     else:
-        date.append(table_datetime[i].contents)
+        date.append(table_datetime[i].text)
 
 
 
@@ -119,6 +140,10 @@ for i in range(len(date)):
     row.append(s_cm[i])
     table.append(row)
     row=[]
+
+with open('48300_dec.csv', 'w', encoding='cp1251', newline="") as f:
+    writer = csv.writer(f, delimiter=';')
+    writer.writerows(table)
 
 
 
